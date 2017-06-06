@@ -42,6 +42,55 @@ def next_step(info_full):
         move = random.choice(free_pos_list)
 
     elif difficulty == const.var_game_diff_hard:
-        pass
+
+        victory_move = predict_victory(field, ai_symb)
+        if victory_move:
+            return victory_move
+
+        avoid_loss_move = predict_victory(field, 'O' if start == 'ai' else 'X')
+        if avoid_loss_move:
+            return avoid_loss_move
+
+        if start == 'ai':
+            if step == 2:
+                enemy_move = [key for key in field if field[key] == 'O'][0]
+
+                if enemy_move in const.field_middle_el:
+                    if enemy_move in ['2', '8']:
+                        return str(int(enemy_move) - 1)
+                    else:
+                        return str(int(enemy_move) + 3)
+                else:
+                    free_pos_list = [str(i) for i in range(1, 10)]
+
+                    free_pos_list.remove('5')
+                    if enemy_move == '1':
+                        free_pos_list.remove('9')
+                    elif enemy_move == '3':
+                        free_pos_list.remove('7')
+                    elif enemy_move == '7':
+                        free_pos_list.remove('3')
+                    elif enemy_move == '9':
+                        free_pos_list.remove('1')
+
+                    move = random.choice(free_pos_list)
+
+            elif step == 4:
+                # find triangle
+                for comb in const.field_triangle_combs:
+                    row_symbs = [field[i] for i in comb[:-1]]
+
+                    if row_symbs.count('X') == 2 and row_symbs.count('_') == 1 and field[comb[3]] != 'O':
+                        return comb[row_symbs.index('_')]
+
+                free_pos_list = [key for key in field if field[key] == '_']
+                move = random.choice(free_pos_list)
+
+            else:
+                free_pos_list = [key for key in field if field[key] == '_']
+                move = random.choice(free_pos_list)
+        else:
+            # if user first
+            pass
 
     return move

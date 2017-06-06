@@ -102,14 +102,14 @@ def bot_start():
 
                         # add check for difficulty !!!
                         history[str(message.chat.id)]['field'][str(first_pos)] = 'X'
-                        history[str(message.chat.id)]['step'] = 2
+                        history[str(message.chat.id)]['step'] = 1
                         history[str(message.chat.id)]['start'] = 'ai'
 
                     else:
                         # user starts
                         bot.send_message(message.chat.id, 'First - you')
                         history[str(message.chat.id)]['start'] = 'user'
-                        history[str(message.chat.id)]['step'] = 1
+                        history[str(message.chat.id)]['step'] = 0
 
                     send_msg_field(message.chat.id)
                 else:
@@ -130,6 +130,7 @@ def bot_start():
                             bot.send_message(message.chat.id, const.msg_try_again)
                         else:
                             move = ai.next_step(history[str(message.chat.id)])
+                            history[str(message.chat.id)]['step'] += 1
                             history[str(message.chat.id)]['field'][move] = 'X' if history[str(message.chat.id)]['start'] == 'ai' else 'O'
                             if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
                                 send_msg_field(message.chat.id)

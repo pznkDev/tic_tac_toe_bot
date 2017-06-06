@@ -1,6 +1,7 @@
 import random
 
 import telebot
+import time
 
 import bot.bot_config as config
 import bot.const as const
@@ -96,7 +97,8 @@ def bot_start():
                     if bool(random.getrandbits(1)):
                         # bot starts
                         bot.send_message(message.chat.id, 'First - bot')
-                        first_pos = random.randint(1, 9)
+
+                        first_pos = 5 if history[str(message.chat.id)]['diff'] == const.var_game_diff_hard else random.randint(1, 9)
 
                         # add check for difficulty !!!
                         history[str(message.chat.id)]['field'][str(first_pos)] = 'X'
@@ -115,13 +117,13 @@ def bot_start():
                     print('incorrect difficulty')
 
             elif cur_state == const.state_playing:
-
                 if message.text in const.field_all:
                     if history[str(message.chat.id)]['field'][message.text] == '_':
                         history[str(message.chat.id)]['field'][message.text] = 'X' if history[str(message.chat.id)]['start'] == 'user' else 'O'
                         history[str(message.chat.id)]['step'] += 1
 
                         send_msg_field(message.chat.id)
+                        time.sleep(1)
 
                         if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
                             # end game

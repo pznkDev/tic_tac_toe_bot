@@ -126,20 +126,18 @@ def bot_start():
                         time.sleep(1)
 
                         if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
-                            # end game
-                            pass
+                            history[str(message.chat.id)]['state'] = const.state_start
+                            bot.send_message(message.chat.id, const.msg_try_again)
                         else:
                             move = ai.next_step(history[str(message.chat.id)])
                             history[str(message.chat.id)]['field'][move] = 'X' if history[str(message.chat.id)]['start'] == 'ai' else 'O'
                             if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
                                 send_msg_field(message.chat.id)
-                                pass
+                                history[str(message.chat.id)]['state'] = const.state_start
+                                bot.send_message(message.chat.id, const.msg_try_again)
                             else:
                                 send_msg_field(message.chat.id)
 
-                    else:
-                        # already exist
-                        pass
         else:
             bot.send_message(message.chat.id, 'enter /start - to start the game')
 

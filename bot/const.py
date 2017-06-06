@@ -8,7 +8,7 @@ msg_wrong_type = 'Wrong type! Enter /start to try again'
 
 msg_choose_difficulty = 'Choose difficulty !'
 msg_wrong_difficulty = 'Wrong difficulty! Enter /start to try again'
-
+msg_try_again = 'Enter /start to try again'
 
 var_vs_ai = 'vs AI'
 var_vs_human = 'vs human'

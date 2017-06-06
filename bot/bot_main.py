@@ -1,8 +1,10 @@
 import random
 
 import telebot
+
 import bot.bot_config as config
 import bot.const as const
+import bot.ai_algorithm as ai
 
 
 bot = telebot.TeleBot(config.BOT_TOKEN)
@@ -39,6 +41,19 @@ def send_msg_field(chat_id):
     markup_start.row('4', '5', '6')
     markup_start.row('7', '8', '9')
     bot.send_message(chat_id, output_field(history[str(chat_id)]['field']), reply_markup=markup_start)
+
+
+def check_victory(f, chat_id):
+    res = None
+
+    for comb in const.victory_combs:
+        if (f[comb[0]] == f[comb[1]]) and (f[comb[1]] == f[comb[2]]) and f[comb[0]] != '_':
+            res = f[comb[0]]
+            break
+
+    if res:
+        bot.send_message(chat_id, 'Winner:::' + res)
+        return res
 
 
 def bot_start():
@@ -85,9 +100,14 @@ def bot_start():
 
                         # add check for difficulty !!!
                         history[str(message.chat.id)]['field'][str(first_pos)] = 'X'
+                        history[str(message.chat.id)]['step'] = 2
+                        history[str(message.chat.id)]['start'] = 'ai'
+
                     else:
                         # user starts
                         bot.send_message(message.chat.id, 'First - you')
+                        history[str(message.chat.id)]['start'] = 'user'
+                        history[str(message.chat.id)]['step'] = 1
 
                     send_msg_field(message.chat.id)
                 else:
@@ -95,9 +115,29 @@ def bot_start():
                     print('incorrect difficulty')
 
             elif cur_state == const.state_playing:
-                print(message)
-            else:
-                pass
+
+                if message.text in const.field_all:
+                    if history[str(message.chat.id)]['field'][message.text] == '_':
+                        history[str(message.chat.id)]['field'][message.text] = 'X' if history[str(message.chat.id)]['start'] == 'user' else 'O'
+                        history[str(message.chat.id)]['step'] += 1
+
+                        send_msg_field(message.chat.id)
+
+                        if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
+                            # end game
+                            pass
+                        else:
+                            move = ai.next_step(history[str(message.chat.id)])
+                            history[str(message.chat.id)]['field'][move] = 'X' if history[str(message.chat.id)]['start'] == 'ai' else 'O'
+                            if check_victory(history[str(message.chat.id)]['field'], message.chat.id):
+                                send_msg_field(message.chat.id)
+                                pass
+                            else:
+                                send_msg_field(message.chat.id)
+
+                    else:
+                        # already exist
+                        pass
         else:
             bot.send_message(message.chat.id, 'enter /start - to start the game')
 

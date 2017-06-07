@@ -3,15 +3,35 @@ state_choose_type = 'state_choose_type'
 state_choose_difficulty = 'state_choose_difficulty'
 state_playing = 'state_playing'
 
-msg_choose_type = 'Choose your enemy !'
-msg_wrong_type = 'Wrong type! Enter /start to try again'
+msg_choose_type = 'Choose your *enemy* !'
+msg_wrong_type = '*Wrong type!* Enter /start to try again'
+msg_warning_multiple = '*Sorry*, but only _single game_ available :('
 
 msg_choose_difficulty = 'Choose difficulty !'
-msg_wrong_difficulty = 'Wrong difficulty! Enter /start to try again'
+msg_wrong_difficulty = '*Wrong difficulty!* Enter /start to try again'
 msg_try_again = 'Enter /start to try again'
+
+msg_help = '''\r
+Hello, this is *tic-tac-toe bot*.\n
+This game has two types:
+\t - *vs human* (unfortunately unavailable)
+\t - *vs ai* (playing against algorithm)\n
+Game has 3 *difficulties*:
+\t - *easy* (full random)
+\t - *normal* (random, but with prediction of win)
+\t - *hard* (predicts win combination, avoid losses, builds strategy)\n
+Field has next structure:
+1 | 2 | 3
+4 | 5 | 6
+7 | 8 | 9
+Just enter code-number of cell to make move.
+
+_PS It's unreal to win in hard level, good luck )_
+'''
 
 var_vs_ai = 'vs AI'
 var_vs_human = 'vs human'
+
 
 var_game_diff_easy = 'easy'
 var_game_diff_norm = 'normal'

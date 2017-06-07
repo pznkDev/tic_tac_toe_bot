@@ -57,9 +57,9 @@ def next_step(info_full):
 
                 if enemy_move in const.field_middle_el:
                     if enemy_move in ['2', '8']:
-                        return str(int(enemy_move) - 1)
+                        move = str(int(enemy_move) - 1)
                     else:
-                        return str(int(enemy_move) + 3)
+                        move = str(int(enemy_move) + 3)
                 else:
                     free_pos_list = [str(i) for i in range(1, 10)]
 
@@ -91,6 +91,13 @@ def next_step(info_full):
                 move = random.choice(free_pos_list)
         else:
             # if user first
-            pass
+            if step == 1:
+                if field['5'] == '_':
+                    return '5'
+                else:
+                    return random.choice(const.field_corner_el)
+            else:
+                free_pos_list = [key for key in field if field[key] == '_']
+                move = random.choice(free_pos_list)
 
     return move

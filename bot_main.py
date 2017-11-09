@@ -3,9 +3,9 @@ import random
 import telebot
 import time
 
-import bot.bot_config as config
-import bot.const as const
-import bot.ai_algorithm as ai
+import bot_config as config
+import const as const
+import ai_algorithm as ai
 
 
 bot = telebot.TeleBot(config.BOT_TOKEN)

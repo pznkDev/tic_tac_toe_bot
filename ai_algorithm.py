@@ -1,6 +1,6 @@
 import random
 
-import bot.const as const
+import const as const
 
 
 def predict_victory(f, symb):
